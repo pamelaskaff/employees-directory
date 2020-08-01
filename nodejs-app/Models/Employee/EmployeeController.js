@@ -48,7 +48,6 @@ exports.getAllEmployees = function (req, res) {
 exports.createEmployee = function (req, res) {
     try {
         if (!checkParams(req)) {
-            console.log("MISSING INFOOO!")
             res.status(422).send("Missing information");
         }
         readFile(dataPath => {
@@ -70,3 +69,43 @@ exports.createEmployee = function (req, res) {
         res.status(500).send("There was a problem adding the employee");
     }
 };
+
+// Update employee by id
+exports.updateEmployee = function (req, res) {
+    try {
+        if (!checkParams(req)) {
+            res.status(422).send("Missing information");
+        }
+        readFile(data => {
+
+            // get employee id
+            const employeeId = req.params["id"];
+            data[employeeId] = req.body;
+
+            writeFile(JSON.stringify(data, null, 2), () => {
+                res.status(200).send(`users id:${employeeId} updated`);
+            });
+        }, true);
+    } catch{
+        console.log("There was a problem updating the employee", err);
+        res.status(500).send("There was a problem updating the employee");
+    };
+}
+
+// Delete Employee by id 
+exports.deleteEmployee = function (req, res) {
+    try {
+        readFile(data => {
+
+            // get employee id
+            const userId = req.params["id"];
+            delete data[userId];
+            writeFile(JSON.stringify(data, null, 2), () => {
+                res.status(200).send(`users id:${userId} removed`);
+            });
+        }, true);
+    } catch{
+        console.log("There was a problem deleting the employee", err);
+        res.status(500).send("There was a problem deleting the employee");
+    };
+}
