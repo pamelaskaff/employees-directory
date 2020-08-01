@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import { createEmployee } from '../../api/EmployeeApi';
 import Spinner from 'react-bootstrap/Spinner';
 
 
@@ -30,6 +31,12 @@ function AddModal(props: any) {
       image: employee.image,
       age: employee.age
     };
+
+    const response = await createEmployee(data);
+    if (response.status === 200) {
+      setEmployee(response.data);
+      setShowLoading(false);
+    }
     props.onHide();
     reload();
   };
