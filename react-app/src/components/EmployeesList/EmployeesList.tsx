@@ -1,12 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import Employee from '../Employee/employee'
 import CardColumns from 'react-bootstrap/CardColumns';
 import Spinner from 'react-bootstrap/Spinner';
-import EmployeeProps from '../../interfaces/employee';
 import axios from 'axios';
 import InputGroup from 'react-bootstrap/InputGroup';
 import FormControl from 'react-bootstrap/FormControl';
+import Button from 'react-bootstrap/Button';
+import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 import Pagination from '../Pagination/pagination';
+import Employee from '../Employee/employee';
+import EmployeeProps from '../../interfaces/employee';
+import AddModal from '../Employee/AddEmployee';
+import './EmployeesList.scss';
 
 
 const EmployeeList = () => {
@@ -17,6 +23,9 @@ const EmployeeList = () => {
     const itemFilter = (event: any) => setInputFilter(event.target.value.toLocaleLowerCase());
     const [currentPage, setcurrentPage] = useState(1);
     const employeesPerPage = 3;
+    const [showModal, setShowModal] = useState(false);
+    const handleCloseModal = () => setShowModal(false);
+    const handleShowModal = () => setShowModal(true);
 
     //Change Page
     const paginate = (pageNumber: number) => setcurrentPage(pageNumber);
@@ -81,6 +90,8 @@ const EmployeeList = () => {
             </InputGroup>
             <CardColumns>{currentEmployees}</CardColumns>
             <Pagination employeesPerPage={employeesPerPage} totalEmployees={data.length} paginate={paginate} activePage={currentPage} />
+            <Button onClick={handleShowModal}><FontAwesomeIcon icon={faPlusCircle} /></Button>
+            <AddModal show={showModal} onHide={handleCloseModal} />
         </div>
     </React.Fragment>
 }

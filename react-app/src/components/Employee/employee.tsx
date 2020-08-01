@@ -4,6 +4,7 @@ import Button from 'react-bootstrap/Button'
 import EmployeeProps from '../../interfaces/employee';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col'
+
 // get our fontawesome imports
 import { faHome, faPhone, faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
