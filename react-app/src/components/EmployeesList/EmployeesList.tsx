@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import CardColumns from 'react-bootstrap/CardColumns';
 import Spinner from 'react-bootstrap/Spinner';
-import axios from 'axios';
 import InputGroup from 'react-bootstrap/InputGroup';
 import FormControl from 'react-bootstrap/FormControl';
 import Button from 'react-bootstrap/Button';
 import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
 
 import Pagination from '../Pagination/pagination';
 import Employee from '../Employee/employee';
 import EmployeeProps from '../../interfaces/employee';
 import AddModal from '../Employee/AddEmployee';
+import { fetchEmployees } from '../../api/EmployeeApi';
 import './EmployeesList.scss';
 
 
@@ -33,7 +35,7 @@ const EmployeeList = () => {
     useEffect(() => {
         const getEmployees = async () => {
             setLoading(true);
-            const res = await axios.get(`https://randomuser.me/`);
+            const res = await fetchEmployees();
             if (res.status !== 200) setError(true);
             setEmployees(res.data);
             setLoading(false);
@@ -46,17 +48,8 @@ const EmployeeList = () => {
     const isInLocation = (employee: EmployeeProps) => isMatch('location', employee);
     const isMatch = (type: string, employee: any) => employee[type] ? employee[type].toLocaleLowerCase().includes(inputFilter) : null
 
-    const data = [
-        { "id": "1", "name": "Pamela", "age": 22, "role": "Software Engineer", "salary": 2000, "phone": "+96170118903", "email": "pameela-skaff@hotmail.com", "location": "UK", "image": "https://picsum.photos/id/1012/3973/263" },
-        { "id": "2", "name": "Toufik", "age": 29, "role": "Software Engineer", "salary": 2000, "phone": "+96170118903", "email": "toufik@hotmail.com", "location": "UAE", "image": "https://homepages.cae.wisc.edu/~ece533/images/girl.png" },
-        { "id": "3", "name": "Georges", "age": 17, "role": "Head of Engineeering", "salary": 2000, "phone": "+96170118903", "email": "kskdkd", "location": "EGYPT", "image": "https://homepages.cae.wisc.edu/~ece533/images/girl.png" },
-        { "id": "4", "name": "Nada", "age": 33, role: "Team lead", salary: 4000, "phone": "+96170118903", "email": "kskdkd", "location": "MENA", "image": "https://homepages.cae.wisc.edu/~ece533/images/girl.png" },
-        { "id": "5", "name": "Christelle", "age": 32, "role": "Human resources", "salary": 2000, "phone": "+96170118903", "email": "kskdkd", "location": "USA", "image": "https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200" },
-        { "id": "6", "name": "Ali", "age": 22, "role": "Software Engineer", "salary": 2000, "phone": "+96170118903", "email": "kskdkd", "location": "Beirut", "image": "https://homepages.cae.wisc.edu/~ece533/images/girl.png" }
-    ];
-
     //Filter Employees by name location or role
-    const employeesFilteredList = data.filter(employee => isInName(employee) || isInRole(employee) || isInLocation(employee))
+    const employeesFilteredList = employees.filter(employee => isInName(employee) || isInRole(employee) || isInLocation(employee))
         .map((employee) => {
             return (
                 <Employee key={employee.id} {...employee} />
@@ -89,8 +82,8 @@ const EmployeeList = () => {
                 />
             </InputGroup>
             <CardColumns>{currentEmployees}</CardColumns>
-            <Pagination employeesPerPage={employeesPerPage} totalEmployees={data.length} paginate={paginate} activePage={currentPage} />
             <Button onClick={handleShowModal}><FontAwesomeIcon icon={faPlusCircle} /></Button>
+            <Pagination employeesPerPage={employeesPerPage} totalEmployees={employees.length} paginate={paginate} activePage={currentPage} />
             <AddModal show={showModal} onHide={handleCloseModal} />
         </div>
     </React.Fragment>

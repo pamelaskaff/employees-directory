@@ -4,7 +4,7 @@ const employees = require('../../database/employees.json')
 const dataPath = path.join(__dirname, '../../database/employees.json');
 const fs = require('fs');
 
-// // helper methods
+// Helper method to read a file
 const readFile = (callback, returnJson = false, filePath = dataPath, encoding = 'utf8') => {
     fs.readFile(filePath, encoding, (err, data) => {
         if (err) {
@@ -14,7 +14,7 @@ const readFile = (callback, returnJson = false, filePath = dataPath, encoding = 
     });
 };
 
-
+// Helper method to write in a file
 const writeFile = (fileData, callback, filePath = dataPath, encoding = 'utf8') => {
     fs.writeFile(filePath, fileData, encoding, (err, data) => {
         if (err) {
@@ -33,7 +33,7 @@ function checkParams(req) {
         return true;
 }
 
-//Get all employees
+//Get all Employees
 exports.getAllEmployees = function (req, res) {
     try {
         readFile((dataPath) => {
@@ -70,7 +70,7 @@ exports.createEmployee = function (req, res) {
     }
 };
 
-// Update employee by id
+// Update Employee by id
 exports.updateEmployee = function (req, res) {
     try {
         if (!checkParams(req)) {

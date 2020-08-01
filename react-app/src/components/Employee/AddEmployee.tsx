@@ -12,7 +12,6 @@ function AddModal(props: any) {
   const [validated, setValidated] = useState(false);
   const reload = () => window.location.reload(false);
 
-
   const addEmployee = async (event: any) => {
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
