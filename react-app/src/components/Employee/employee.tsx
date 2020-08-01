@@ -29,10 +29,6 @@ const Employee: React.FC<EmployeeProps> = ({ id, image, name, role, location, ph
           <Col xs="auto"><FontAwesomeIcon icon={faPhone} /></Col>
           <Col xs="auto">{phone}</Col>
         </Row>
-        <Row>
-          <Button variant="primary">Edit Employee</Button>
-        </Row>
-
       </Card.Body>
     </Card>
   )

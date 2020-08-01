@@ -6,8 +6,6 @@ import FormControl from 'react-bootstrap/FormControl';
 import Button from 'react-bootstrap/Button';
 import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Col from 'react-bootstrap/Col';
-import Row from 'react-bootstrap/Row';
 
 import Pagination from '../Pagination/pagination';
 import Employee from '../Employee/employee';
@@ -83,7 +81,7 @@ const EmployeeList = () => {
             </InputGroup>
             <CardColumns>{currentEmployees}</CardColumns>
             <Button onClick={handleShowModal}><FontAwesomeIcon icon={faPlusCircle} /></Button>
-            <Pagination employeesPerPage={employeesPerPage} totalEmployees={employees.length} paginate={paginate} activePage={currentPage} />
+            <Pagination employeesPerPage={employeesPerPage} totalEmployees={employeesFilteredList.length} paginate={paginate} activePage={currentPage} />
             <AddModal show={showModal} onHide={handleCloseModal} />
         </div>
     </React.Fragment>
