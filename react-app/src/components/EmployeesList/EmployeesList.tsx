@@ -6,6 +6,7 @@ import EmployeeProps from '../../interfaces/employee';
 import axios from 'axios';
 import InputGroup from 'react-bootstrap/InputGroup';
 import FormControl from 'react-bootstrap/FormControl';
+import Pagination from '../Pagination/pagination';
 
 
 const EmployeeList = () => {
@@ -14,7 +15,11 @@ const EmployeeList = () => {
     const [error, setError] = useState(false);
     const [inputFilter, setInputFilter] = useState('');
     const itemFilter = (event: any) => setInputFilter(event.target.value.toLocaleLowerCase());
+    const [currentPage, setcurrentPage] = useState(1);
+    const employeesPerPage = 3;
 
+    //Change Page
+    const paginate = (pageNumber: number) => setcurrentPage(pageNumber);
 
     useEffect(() => {
         const getEmployees = async () => {
@@ -37,26 +42,29 @@ const EmployeeList = () => {
         { "id": "2", "name": "Toufik", "age": 29, "role": "Software Engineer", "salary": 2000, "phone": "+96170118903", "email": "toufik@hotmail.com", "location": "UAE", "image": "https://homepages.cae.wisc.edu/~ece533/images/girl.png" },
         { "id": "3", "name": "Georges", "age": 17, "role": "Head of Engineeering", "salary": 2000, "phone": "+96170118903", "email": "kskdkd", "location": "EGYPT", "image": "https://homepages.cae.wisc.edu/~ece533/images/girl.png" },
         { "id": "4", "name": "Nada", "age": 33, role: "Team lead", salary: 4000, "phone": "+96170118903", "email": "kskdkd", "location": "MENA", "image": "https://homepages.cae.wisc.edu/~ece533/images/girl.png" },
-        {"id": "5", "name": "Christelle", "age": 32, "role": "Human resources", "salary": 2000, "phone": "+96170118903", "email": "kskdkd", "location": "USA", "image": "https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200"},
+        { "id": "5", "name": "Christelle", "age": 32, "role": "Human resources", "salary": 2000, "phone": "+96170118903", "email": "kskdkd", "location": "USA", "image": "https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200" },
         { "id": "6", "name": "Ali", "age": 22, "role": "Software Engineer", "salary": 2000, "phone": "+96170118903", "email": "kskdkd", "location": "Beirut", "image": "https://homepages.cae.wisc.edu/~ece533/images/girl.png" }
     ];
 
-
-
-
-    const employeesList = data.filter(employee => isInName(employee) || isInRole(employee) || isInLocation(employee))
+    //Filter Employees by name location or role
+    const employeesFilteredList = data.filter(employee => isInName(employee) || isInRole(employee) || isInLocation(employee))
         .map((employee) => {
             return (
                 <Employee key={employee.id} {...employee} />
             )
-        })
+        });
+
+    // Get current employees in the selected page
+    const indexOfLastEmployee = currentPage * employeesPerPage;
+    const indexOfFirstEmployee = indexOfLastEmployee - employeesPerPage;
+    const currentEmployees = employeesFilteredList.slice(indexOfFirstEmployee, indexOfLastEmployee);
+
     if (loading) {
         return <Spinner animation="border" role="status"><span className="sr-only">Loading...</span></Spinner>
     }
     else if (error) {
         return <p>Error Fetching employees</p>
     }
-
 
     return <React.Fragment>
         <div>
@@ -71,10 +79,9 @@ const EmployeeList = () => {
                     onChange={itemFilter}
                 />
             </InputGroup>
-            <CardColumns>{employeesList}</CardColumns>
+            <CardColumns>{currentEmployees}</CardColumns>
+            <Pagination employeesPerPage={employeesPerPage} totalEmployees={data.length} paginate={paginate} activePage={currentPage} />
         </div>
     </React.Fragment>
 }
-export default EmployeeList
-
-
+export default EmployeeList;
